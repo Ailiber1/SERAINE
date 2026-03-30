@@ -19,7 +19,7 @@
 ## 2. デザインコンセプト
 
 ### デザイン指針画像
-`DESIGN_REFERENCE.jpg` を参照。
+`DESIGN_REFERENCE.png` を参照。
 **この画像のデザイン・雰囲気・レイアウトを忠実に再現すること。**
 
 ### Tone
@@ -197,15 +197,15 @@ site_settings     — サイト設定（shipping_fee, free_shipping_threshold, n
 
 | # | ファイル名 | 用途 |
 |---|-----------|------|
-| 1 | hero-bg.jpg | ヒーロー背景 |
-| 2 | brand-story.jpg | ブランドストーリーセクション |
+| 1 | hero-bg.png | ヒーロー背景 |
+| 2 | brand-story.png | ブランドストーリーセクション |
 | 3 | product-serum.jpg | リュミエール セラム |
 | 4 | product-cream.jpg | ヴェルール クリーム |
 | 5 | product-toner.jpg | ロゼ トーナー |
-| 6 | product-cleansing.jpg | ペタル クレンジング |
-| 7 | product-eyecream.jpg | エクロール アイクリーム |
-| 8 | product-sunscreen.jpg | シエル UV プロテクト |
-| 9 | product-nightmask.jpg | ノクテイユ ナイトマスク |
-| 10 | product-coffret.jpg | セレーヌ コフレセット |
+| 6 | product-cleansing.png | ペタル クレンジング |
+| 7 | product-eyecream.png | エクロール アイクリーム |
+| 8 | product-sunscreen.png | シエル UV プロテクト |
+| 9 | product-nightmask.png | ノクテイユ ナイトマスク |
+| 10 | product-coffret.png | セレーヌ コフレセット |
 | 11 | cta-bg.jpg | CTAセクション背景 |
-| 12 | ingredient.jpg | こだわりセクション画像 |
+| 12 | ingredient.png | こだわりセクション画像 |
