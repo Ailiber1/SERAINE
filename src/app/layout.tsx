@@ -31,7 +31,7 @@ export default function RootLayout({
   return (
     <html
       lang="ja"
-      className={`${inter.variable} ${notoSansJP.variable} antialiased`}
+      className={`${inter.variable} ${notoSansJP.variable} antialiased overflow-x-hidden`}
     >
       <head>
         <link
