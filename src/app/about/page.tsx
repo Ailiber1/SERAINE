@@ -12,13 +12,15 @@ export default function AboutPage() {
   return (
     <main className="bg-soft-white">
       {/* ヒーロー */}
-      <section className="relative min-h-[480px] md:min-h-[560px] flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[480px] md:min-h-[560px] flex items-center justify-center overflow-hidden bg-deep-charcoal">
         <Image
           src="/images/about-hero.jpg"
           alt=""
           fill
           className="object-cover"
           priority
+          loading="eager"
+          sizes="100vw"
         />
         <div className="absolute inset-0 bg-deep-charcoal/50" />
         <div className="relative z-10 max-w-3xl mx-auto text-center px-6">
