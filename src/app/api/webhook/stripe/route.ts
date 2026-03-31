@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { stripe } from "@/lib/stripe/client";
+import { getStripe } from "@/lib/stripe/client";
 import { createClient } from "@supabase/supabase-js";
 import { sendOrderConfirmation } from "@/lib/email/send-order-confirmation";
 import type { Product } from "@/types/database";
@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
   if (webhookSecret && webhookSecret !== "whsec_placeholder" && sig) {
     try {
-      event = stripe.webhooks.constructEvent(body, sig, webhookSecret);
+      event = getStripe().webhooks.constructEvent(body, sig, webhookSecret);
     } catch (err) {
       console.error("Webhook署名検証失敗:", err);
       return NextResponse.json(
