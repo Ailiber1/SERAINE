@@ -23,11 +23,11 @@ export default function AboutPage() {
           sizes="100vw"
         />
         <div className="absolute inset-0 bg-deep-charcoal/50" />
-        <div className="relative z-10 max-w-3xl mx-auto text-center px-6">
+        <div className="relative z-10 max-w-3xl mx-auto text-center px-3 md:px-6">
           <p className="text-[11px] tracking-[0.3em] text-champagne-gold uppercase mb-6">
             About SÉRAINE
           </p>
-          <h1 className="font-heading text-[32px] md:text-[48px] leading-tight tracking-normal md:tracking-wide mb-6 text-white">
+          <h1 className="font-heading text-[32px] md:text-[48px] leading-tight tracking-[-0.02em] md:tracking-wide mb-6 text-white">
             穏やかに輝く、<br />
             あなただけの美しさを。
           </h1>
