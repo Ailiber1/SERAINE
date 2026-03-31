@@ -68,14 +68,17 @@ export default async function Home() {
       {/* ===== ヒーローセクション ===== */}
       <section className="relative w-full min-h-[520px] md:min-h-[640px] flex items-center justify-center overflow-hidden">
         <Image
-          src="/images/hero-bg.png"
+          src="/images/hero-bg.jpg"
           alt=""
           fill
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-soft-white/30" />
+        <div className="absolute inset-0 bg-soft-white/20" />
         <div className="relative z-10 text-center px-5 py-20 md:py-28">
+          <p className="text-[10px] md:text-[11px] tracking-[0.35em] text-deep-charcoal/40 uppercase mb-4">
+            Serene Beauty, Timeless Glow
+          </p>
           <h1 className="font-heading text-[32px] md:text-[48px] lg:text-[56px] leading-tight tracking-wide text-deep-charcoal">
             穏やかに輝く、<br className="sm:hidden" />
             あなただけの美しさを。
