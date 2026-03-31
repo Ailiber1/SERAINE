@@ -126,13 +126,21 @@ export default function Header() {
                 )}
               </div>
             ) : (
-              <Link
-                href="/login"
-                className="flex items-center gap-1.5 text-[13px] tracking-wide text-deep-charcoal/70 hover:text-deep-charcoal transition-colors"
-              >
-                <User size={18} strokeWidth={1.5} />
-                <span className="hidden sm:inline">ログイン</span>
-              </Link>
+              <div className="flex items-center gap-4">
+                <Link
+                  href="/register"
+                  className="hidden sm:inline text-[12px] tracking-wide text-champagne-gold hover:text-champagne-gold-dark transition-colors"
+                >
+                  新規会員登録
+                </Link>
+                <Link
+                  href="/login"
+                  className="flex items-center gap-1.5 text-[13px] tracking-wide text-deep-charcoal/70 hover:text-deep-charcoal transition-colors"
+                >
+                  <User size={18} strokeWidth={1.5} />
+                  <span className="hidden sm:inline">ログイン</span>
+                </Link>
+              </div>
             )}
             <Link
               href="/cart"
@@ -163,9 +171,9 @@ export default function Header() {
             <Link href="/about" className="py-3 text-[14px] tracking-wide text-deep-charcoal/70 hover:text-deep-charcoal transition-colors" onClick={() => setMenuOpen(false)}>
               私たちについて
             </Link>
-            {user && (
+            <div className="border-t border-border-light my-2" />
+            {user ? (
               <>
-                <div className="border-t border-border-light my-2" />
                 <Link href="/mypage" className="py-3 text-[14px] tracking-wide text-deep-charcoal/70 hover:text-deep-charcoal transition-colors" onClick={() => setMenuOpen(false)}>
                   マイページ
                 </Link>
@@ -175,6 +183,15 @@ export default function Header() {
                 >
                   ログアウト
                 </button>
+              </>
+            ) : (
+              <>
+                <Link href="/login" className="py-3 text-[14px] tracking-wide text-deep-charcoal/70 hover:text-deep-charcoal transition-colors" onClick={() => setMenuOpen(false)}>
+                  ログイン
+                </Link>
+                <Link href="/register" className="py-3 text-[14px] tracking-wide text-champagne-gold hover:text-champagne-gold-dark transition-colors" onClick={() => setMenuOpen(false)}>
+                  新規会員登録
+                </Link>
               </>
             )}
           </nav>

@@ -81,6 +81,12 @@ export async function POST(request: NextRequest) {
       .update({ status: "paid", stripe_session_id: session_id })
       .eq("order_id", orderId);
 
+    // サーバー側でカートをクリア（cart_itemsテーブル）
+    await supabase
+      .from("cart_items")
+      .delete()
+      .eq("user_id", user.id);
+
     // 注文確認メール送信（初回のみ）
     const resendApiKey = process.env.RESEND_API_KEY;
     if (resendApiKey && resendApiKey !== "your_resend_api_key" && user.email) {
