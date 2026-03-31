@@ -11,8 +11,10 @@ function CompleteContent() {
   const [orderId, setOrderId] = useState<string | null>(null);
 
   useEffect(() => {
-    // 決済完了後にカートをクリア（localStorageを直接操作）
+    // 決済完了後にカートをクリア
     localStorage.removeItem("seraine_cart");
+    // CartContextにも変更を通知
+    window.dispatchEvent(new Event("storage"));
 
     // sessionStorageから注文IDを取得
     const storedOrderId = sessionStorage.getItem("seraine_last_order_id");

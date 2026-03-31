@@ -85,6 +85,18 @@ export function CartProvider({ children }: { children: ReactNode }) {
       });
   }, []);
 
+  // 他のページでlocalStorageが変更された場合にカート状態を同期
+  useEffect(() => {
+    const handleStorage = () => {
+      const stored = getStoredCart();
+      if (stored.length === 0) {
+        setItems([]);
+      }
+    };
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, []);
+
   const addItem = useCallback(
     (productId: string, quantity = 1) => {
       setIsAdding(productId);
