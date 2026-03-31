@@ -179,6 +179,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ url: session.url, orderId: order.id });
   } catch (error) {
     console.error("チェックアウトエラー:", error);
-    return NextResponse.json({ error: "チェックアウト処理中にエラーが発生しました" }, { status: 500 });
+    const message = error instanceof Error && error.message.includes("STRIPE_SECRET_KEY")
+      ? "決済サービスの設定に問題があります。しばらく経ってからもう一度お試しください。"
+      : "決済処理の接続に失敗しました。しばらく経ってからもう一度お試しください。";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

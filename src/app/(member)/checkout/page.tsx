@@ -371,8 +371,9 @@ export default function CheckoutPage() {
 
                 {/* エラー表示 */}
                 {error && (
-                  <div className="mt-4 p-3 bg-error/5 border border-error/20 rounded-md">
-                    <p className="text-[13px] text-error">{error}</p>
+                  <div className="mt-4 p-4 bg-blush-pink/30 border border-blush-pink rounded-md">
+                    <p className="text-[13px] text-deep-charcoal font-medium mb-1">お手続きを完了できませんでした</p>
+                    <p className="text-[12px] text-deep-charcoal/60">{error}</p>
                   </div>
                 )}
 
