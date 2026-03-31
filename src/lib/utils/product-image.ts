@@ -12,8 +12,14 @@ const imageMap: Record<string, string> = {
   "セレーヌ コフレセット": "/images/product-coffret.png",
 };
 
-export function getProductImage(product: Product): string {
-  if (product.image_urls && product.image_urls.length > 0 && product.image_urls[0]) {
+export function getProductImage(product: Product | null | undefined): string {
+  if (!product) return "/images/product-serum.jpg";
+  if (
+    Array.isArray(product.image_urls) &&
+    product.image_urls.length > 0 &&
+    typeof product.image_urls[0] === "string" &&
+    product.image_urls[0].trim() !== ""
+  ) {
     return product.image_urls[0];
   }
   return imageMap[product.name] || "/images/product-serum.jpg";

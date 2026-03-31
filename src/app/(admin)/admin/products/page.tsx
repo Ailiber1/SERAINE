@@ -18,7 +18,8 @@ export default function AdminProducts() {
 
   const fetchProducts = useCallback(async () => {
     setLoading(true);
-    const { data } = await supabase
+    const sb = createClient();
+    const { data } = await sb
       .from("products")
       .select("*, category:categories(*)")
       .order("created_at", { ascending: false });
@@ -27,7 +28,8 @@ export default function AdminProducts() {
   }, []);
 
   const fetchCategories = useCallback(async () => {
-    const { data } = await supabase
+    const sb = createClient();
+    const { data } = await sb
       .from("categories")
       .select("*")
       .order("sort_order");
@@ -141,8 +143,8 @@ export default function AdminProducts() {
                       <span
                         className={`inline-block px-2 py-0.5 rounded text-[11px] ${
                           product.is_active
-                            ? "bg-[#E8F5E9] text-[#2E7D32]"
-                            : "bg-[#FAFAFA] text-[#757575]"
+                            ? "bg-status-delivered-bg text-status-delivered-text"
+                            : "bg-status-cancelled-bg text-status-cancelled-text"
                         }`}
                       >
                         {product.is_active ? "公開中" : "非公開"}

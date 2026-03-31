@@ -9,6 +9,16 @@
   --color-champagne-gold-dark: #B89A5E;
   --color-error: #C0392B;
   --color-border-light: #E5E3DF;
+  --color-status-pending-bg: #FFF3E0;
+  --color-status-pending-text: #E65100;
+  --color-status-confirmed-bg: #E3F2FD;
+  --color-status-confirmed-text: #1565C0;
+  --color-status-shipped-bg: #F3E5F5;
+  --color-status-shipped-text: #7B1FA2;
+  --color-status-delivered-bg: #E8F5E9;
+  --color-status-delivered-text: #2E7D32;
+  --color-status-cancelled-bg: #FAFAFA;
+  --color-status-cancelled-text: #757575;
 }
 
 @font-face {

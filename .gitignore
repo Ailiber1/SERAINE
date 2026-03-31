@@ -9,6 +9,7 @@ out/
 .open-next/
 .vercel
 .wrangler
+.open-next/
 *.tsbuildinfo
 next-env.d.ts
 /DESIGN_REFERENCE.png

@@ -15,11 +15,11 @@ const STATUS_OPTIONS: { value: OrderStatus; label: string }[] = [
 ];
 
 const STATUS_STYLES: Record<string, string> = {
-  pending: "bg-[#FFF3E0] text-[#E65100]",
-  confirmed: "bg-[#E3F2FD] text-[#1565C0]",
-  shipped: "bg-[#F3E5F5] text-[#7B1FA2]",
-  delivered: "bg-[#E8F5E9] text-[#2E7D32]",
-  cancelled: "bg-[#FAFAFA] text-[#757575]",
+  pending: "bg-status-pending-bg text-status-pending-text",
+  confirmed: "bg-status-confirmed-bg text-status-confirmed-text",
+  shipped: "bg-status-shipped-bg text-status-shipped-text",
+  delivered: "bg-status-delivered-bg text-status-delivered-text",
+  cancelled: "bg-status-cancelled-bg text-status-cancelled-text",
 };
 
 export default function AdminOrders() {
@@ -33,7 +33,8 @@ export default function AdminOrders() {
 
   const fetchOrders = useCallback(async () => {
     setLoading(true);
-    const { data } = await supabase
+    const sb = createClient();
+    const { data } = await sb
       .from("orders")
       .select("*, order_items(*, product:products(name)), profile:profiles(full_name, phone)")
       .order("created_at", { ascending: false });

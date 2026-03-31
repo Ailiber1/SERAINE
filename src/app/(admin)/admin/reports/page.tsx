@@ -27,9 +27,10 @@ export default function AdminReports() {
 
   const fetchData = useCallback(async () => {
     setLoading(true);
+    const sb = createClient();
 
     // 全注文（確認済み以上）
-    const { data: orders } = await supabase
+    const { data: orders } = await sb
       .from("orders")
       .select("id, total, status, created_at")
       .in("status", ["confirmed", "shipped", "delivered"]);
@@ -63,7 +64,7 @@ export default function AdminReports() {
     // 商品別売上
     const orderIds = orders?.map((o) => o.id) ?? [];
     if (orderIds.length > 0) {
-      const { data: items } = await supabase
+      const { data: items } = await sb
         .from("order_items")
         .select("product_id, quantity, price, product:products(name)")
         .in("order_id", orderIds);

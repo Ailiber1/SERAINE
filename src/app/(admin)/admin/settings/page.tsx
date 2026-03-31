@@ -22,7 +22,8 @@ export default function AdminSettings() {
 
   const fetchSettings = useCallback(async () => {
     setLoading(true);
-    const { data } = await supabase
+    const sb = createClient();
+    const { data } = await sb
       .from("site_settings")
       .select("key, value")
       .eq("key", "shipping")

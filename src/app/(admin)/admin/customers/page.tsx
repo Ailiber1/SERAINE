@@ -23,9 +23,10 @@ export default function AdminCustomers() {
 
   const fetchCustomers = useCallback(async () => {
     setLoading(true);
+    const sb = createClient();
 
     // プロファイル取得
-    const { data: profiles } = await supabase
+    const { data: profiles } = await sb
       .from("profiles")
       .select("id, full_name, phone, created_at")
       .eq("role", "customer")
@@ -38,7 +39,7 @@ export default function AdminCustomers() {
     }
 
     // 注文情報を取得して LTV と注文数を計算
-    const { data: orders } = await supabase
+    const { data: orders } = await sb
       .from("orders")
       .select("user_id, total, status")
       .in("status", ["confirmed", "shipped", "delivered"]);
