@@ -10,12 +10,20 @@ export default function AboutPage() {
   return (
     <main className="bg-soft-white">
       {/* ヒーロー */}
-      <section className="relative py-20 md:py-32 px-6 text-center bg-deep-charcoal text-white">
-        <div className="max-w-3xl mx-auto">
+      <section className="relative min-h-[480px] md:min-h-[560px] flex items-center justify-center overflow-hidden">
+        <Image
+          src="/images/about-hero.png"
+          alt=""
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-deep-charcoal/50" />
+        <div className="relative z-10 max-w-3xl mx-auto text-center px-6">
           <p className="text-[11px] tracking-[0.3em] text-champagne-gold uppercase mb-6">
             About SÉRAINE
           </p>
-          <h1 className="font-heading text-[32px] md:text-[48px] leading-tight tracking-wide mb-6">
+          <h1 className="font-heading text-[32px] md:text-[48px] leading-tight tracking-wide mb-6 text-white">
             穏やかに輝く、
             <br />
             あなただけの美しさを。
