@@ -122,10 +122,7 @@ export default function CheckoutPage() {
         sessionStorage.setItem("seraine_last_order_id", data.orderId);
       }
 
-      // カートをクリア
-      clearCart();
-
-      // Stripe Checkoutにリダイレクト
+      // Stripe Checkoutにリダイレクト（カートクリアは完了ページで行う）
       if (data.url) {
         window.location.href = data.url;
       }
@@ -135,7 +132,7 @@ export default function CheckoutPage() {
     }
   }
 
-  if (totalItems === 0) {
+  if (totalItems === 0 && !isSubmitting) {
     return (
       <div className="py-20 md:py-32 px-5">
         <div className="max-w-[600px] mx-auto text-center">

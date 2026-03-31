@@ -5,20 +5,25 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { CheckCircle, Package, ArrowRight } from "lucide-react";
 import { Suspense } from "react";
+import { useCart } from "@/lib/cart-context";
 
 function CompleteContent() {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
   const [orderId, setOrderId] = useState<string | null>(null);
+  const { clearCart } = useCart();
 
   useEffect(() => {
+    // 決済完了後にカートをクリア
+    clearCart();
+
     // sessionStorageから注文IDを取得
     const storedOrderId = sessionStorage.getItem("seraine_last_order_id");
     if (storedOrderId) {
       setOrderId(storedOrderId);
       sessionStorage.removeItem("seraine_last_order_id");
     }
-  }, []);
+  }, [clearCart]);
 
   const orderNumber = orderId ? orderId.slice(0, 8).toUpperCase() : null;
 
