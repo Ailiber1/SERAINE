@@ -91,7 +91,7 @@ export async function sendOrderConfirmation({
     const resend = new Resend(resendApiKey);
 
     await resend.emails.send({
-      from: "SERAINE <noreply@seraine.jp>",
+      from: "SÉRAINE <onboarding@resend.dev>",
       to: email,
       subject: `【SERAINE】ご注文確認 #${order.id.slice(0, 8).toUpperCase()}`,
       html: htmlBody,

@@ -4,6 +4,7 @@ import { formatPrice } from "@/lib/utils/format";
 import Link from "next/link";
 import { Package, ChevronRight, User as UserIcon } from "lucide-react";
 import type { Order, OrderItem, Product } from "@/types/database";
+import CancelOrderButton from "@/components/CancelOrderButton";
 
 const STATUS_LABELS: Record<string, { label: string; color: string }> = {
   pending: { label: "決済待ち", color: "bg-yellow-100 text-yellow-800" },
@@ -185,6 +186,14 @@ export default async function MyPage() {
                             : formatPrice(order.shipping_fee)}
                         </span>
                       </div>
+
+                      {/* キャンセルボタン（pending/confirmedのみ） */}
+                      {(order.status === "pending" || order.status === "confirmed") && (
+                        <CancelOrderButton
+                          orderId={order.id}
+                          orderNumber={order.id.slice(0, 8).toUpperCase()}
+                        />
+                      )}
                     </div>
                   </div>
                 );
