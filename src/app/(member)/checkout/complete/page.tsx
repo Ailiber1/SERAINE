@@ -27,12 +27,12 @@ function CompleteContent() {
     }
 
     // Stripeセッションの決済完了を確認し、注文確定＋メール送信
-    if (sessionId && !confirmed.current) {
+    if (!confirmed.current) {
       confirmed.current = true;
       fetch("/api/checkout/confirm", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ session_id: sessionId }),
+        body: JSON.stringify({ session_id: sessionId, order_id: storedOrderId }),
       })
         .then((res) => res.json())
         .then((data) => {

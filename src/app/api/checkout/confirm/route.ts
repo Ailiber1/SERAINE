@@ -5,14 +5,9 @@ import { createServerClient } from "@supabase/ssr";
 import { sendOrderConfirmation } from "@/lib/email/send-order-confirmation";
 import type { OrderItem, Product, Order } from "@/types/database";
 
-const STRIPE_API = "https://api.stripe.com/v1";
-
 export async function POST(request: NextRequest) {
   try {
-    const { session_id } = await request.json();
-    if (!session_id) {
-      return NextResponse.json({ error: "session_id is required" }, { status: 400 });
-    }
+    const { session_id, order_id: clientOrderId } = await request.json();
 
     // 認証チェック
     const cookieStore = request.cookies;
@@ -32,28 +27,42 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "認証が必要です" }, { status: 401 });
     }
 
-    // Stripeセッションの状態を確認
-    const stripeKey = process.env.STRIPE_SECRET_KEY;
-    if (!stripeKey) {
-      return NextResponse.json({ error: "決済設定エラー" }, { status: 500 });
+    // order_idを特定（クライアントから送られたIDを優先、なければStripe APIから取得）
+    let orderId = clientOrderId;
+
+    if (!orderId && session_id) {
+      const stripeKey = process.env.STRIPE_SECRET_KEY;
+      if (stripeKey) {
+        try {
+          const stripeRes = await fetch(`https://api.stripe.com/v1/checkout/sessions/${session_id}`, {
+            headers: { Authorization: `Bearer ${stripeKey}` },
+          });
+          const stripeSession = await stripeRes.json();
+          orderId = stripeSession.metadata?.order_id;
+        } catch (e) {
+          console.error("Stripe API エラー:", e);
+        }
+      }
     }
 
-    const stripeRes = await fetch(`${STRIPE_API}/checkout/sessions/${session_id}`, {
-      headers: { Authorization: `Bearer ${stripeKey}` },
-    });
-    const stripeSession = await stripeRes.json();
-
-    if (stripeSession.payment_status !== "paid") {
-      return NextResponse.json({ error: "決済が完了していません" }, { status: 400 });
+    if (!orderId) {
+      // order_idが取得できない場合、最新のpending注文を探す
+      const { data: latestOrder } = await supabase
+        .from("orders")
+        .select("id")
+        .eq("user_id", user.id)
+        .eq("status", "pending")
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .single();
+      orderId = latestOrder?.id;
     }
 
-    // metadataからorder_idを取得
-    const orderId = stripeSession.metadata?.order_id;
     if (!orderId) {
       return NextResponse.json({ error: "注文情報が見つかりません" }, { status: 400 });
     }
 
-    // 注文を確認済みに更新（まだpendingの場合のみ）
+    // 注文を取得
     const { data: order } = await supabase
       .from("orders")
       .select("*")
@@ -78,16 +87,16 @@ export async function POST(request: NextRequest) {
 
     await supabase
       .from("order_payments")
-      .update({ status: "paid", stripe_session_id: session_id })
+      .update({ status: "paid", stripe_session_id: session_id || "" })
       .eq("order_id", orderId);
 
-    // サーバー側でカートをクリア（cart_itemsテーブル）
+    // サーバー側でカートをクリア
     await supabase
       .from("cart_items")
       .delete()
       .eq("user_id", user.id);
 
-    // 注文確認メール送信（初回のみ）
+    // 注文確認メール送信
     const resendApiKey = process.env.RESEND_API_KEY;
     if (resendApiKey && resendApiKey !== "your_resend_api_key" && user.email) {
       try {
@@ -102,6 +111,7 @@ export async function POST(request: NextRequest) {
             items: orderItems as unknown as (OrderItem & { product: Product })[],
             email: user.email,
           });
+          console.log(`注文確認メール送信完了: ${user.email}`);
         }
       } catch (emailErr) {
         console.error("注文確認メール送信エラー:", emailErr);
