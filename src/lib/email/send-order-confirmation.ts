@@ -85,17 +85,26 @@ export async function sendOrderConfirmation({
     return;
   }
 
-  // Resend APIを使ってメール送信
+  // Resend REST APIを使ってメール送信（fetch APIベース、SDKなし）
   try {
-    const { Resend } = await import("resend");
-    const resend = new Resend(resendApiKey);
-
-    await resend.emails.send({
-      from: "SÉRAINE <onboarding@resend.dev>",
-      to: email,
-      subject: `【SERAINE】ご注文確認 #${order.id.slice(0, 8).toUpperCase()}`,
-      html: htmlBody,
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${resendApiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: "SÉRAINE <onboarding@resend.dev>",
+        to: [email],
+        subject: `【SERAINE】ご注文確認 #${order.id.slice(0, 8).toUpperCase()}`,
+        html: htmlBody,
+      }),
     });
+
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(`Resend API error: ${err}`);
+    }
 
     console.log(`注文確認メール送信完了: ${email}`);
   } catch (error) {

@@ -19,8 +19,6 @@ export default function AdminCustomers() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
-  const supabase = createClient();
-
   const fetchCustomers = useCallback(async () => {
     setLoading(true);
     const sb = createClient();

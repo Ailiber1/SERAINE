@@ -2,29 +2,30 @@ export const runtime = 'edge';
 
 import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
-import { z } from "zod";
-import { Resend } from "resend";
 
-const contactSchema = z.object({
-  name: z.string().min(1, "お名前を入力してください").max(100),
-  email: z.string().email("有効なメールアドレスを入力してください"),
-  subject: z.string().min(1, "件名を入力してください").max(200),
-  message: z.string().min(1, "メッセージを入力してください").max(5000),
-});
+function validateContact(body: unknown): { name: string; email: string; subject: string; message: string } | null {
+  if (!body || typeof body !== 'object') return null;
+  const b = body as Record<string, unknown>;
+  if (typeof b.name !== 'string' || !b.name || b.name.length > 100) return null;
+  if (typeof b.email !== 'string' || !b.email.includes('@')) return null;
+  if (typeof b.subject !== 'string' || !b.subject || b.subject.length > 200) return null;
+  if (typeof b.message !== 'string' || !b.message || b.message.length > 5000) return null;
+  return { name: b.name, email: b.email, subject: b.subject, message: b.message };
+}
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const parsed = contactSchema.safeParse(body);
+    const parsed = validateContact(body);
 
-    if (!parsed.success) {
+    if (!parsed) {
       return NextResponse.json(
-        { error: "入力内容に問題があります", details: parsed.error.flatten() },
+        { error: "入力内容に問題があります" },
         { status: 400 }
       );
     }
 
-    const { name, email, subject, message } = parsed.data;
+    const { name, email, subject, message } = parsed;
 
     // Supabaseに保存
     const cookieStore = request.cookies;
@@ -60,13 +61,20 @@ export async function POST(request: NextRequest) {
     const resendApiKey = process.env.RESEND_API_KEY;
     if (resendApiKey && resendApiKey !== "your_resend_api_key") {
       try {
-        const resend = new Resend(resendApiKey);
-        await resend.emails.send({
-          from: "SÉRAINE <onboarding@resend.dev>",
-          to: email,
-          subject: "【SÉRAINE】お問い合わせを受け付けました",
-          html: buildContactConfirmationHtml(name, subject, message),
+        const res = await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${resendApiKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            from: "SÉRAINE <onboarding@resend.dev>",
+            to: [email],
+            subject: "【SÉRAINE】お問い合わせを受け付けました",
+            html: buildContactConfirmationHtml(name, subject, message),
+          }),
         });
+        if (!res.ok) throw new Error(await res.text());
         console.log(`お問い合わせ確認メール送信完了: ${email}`);
       } catch (emailError) {
         console.error("メール送信エラー:", emailError);

@@ -23,8 +23,6 @@ export default function AdminReports() {
   const [productData, setProductData] = useState<ProductSalesData[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const supabase = createClient();
-
   const fetchData = useCallback(async () => {
     setLoading(true);
     const sb = createClient();

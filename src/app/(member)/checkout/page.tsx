@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useCart } from "@/lib/cart-context";
 import { formatPrice } from "@/lib/utils/format";
 import { getProductImage } from "@/lib/utils/product-image";
@@ -15,7 +14,6 @@ const DEFAULT_SHIPPING_FEE = 550;
 const DEFAULT_FREE_THRESHOLD = 8000;
 
 export default function CheckoutPage() {
-  const router = useRouter();
   const { items, clearCart, totalItems } = useCart();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);

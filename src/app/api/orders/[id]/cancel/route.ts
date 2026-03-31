@@ -2,7 +2,6 @@ export const runtime = 'edge';
 
 import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
-import { Resend } from "resend";
 
 export async function POST(
   request: NextRequest,
@@ -79,13 +78,20 @@ export async function POST(
     const resendApiKey = process.env.RESEND_API_KEY;
     if (resendApiKey && resendApiKey !== "your_resend_api_key" && user.email) {
       try {
-        const resend = new Resend(resendApiKey);
-        await resend.emails.send({
-          from: "SÉRAINE <onboarding@resend.dev>",
-          to: user.email,
-          subject: "【SÉRAINE】ご注文のキャンセルが完了しました",
-          html: buildCancelConfirmationHtml(order),
+        const res = await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${resendApiKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            from: "SÉRAINE <onboarding@resend.dev>",
+            to: [user.email],
+            subject: "【SÉRAINE】ご注文のキャンセルが完了しました",
+            html: buildCancelConfirmationHtml(order),
+          }),
         });
+        if (!res.ok) throw new Error(await res.text());
         console.log(`キャンセル確認メール送信完了: ${user.email}`);
       } catch (emailError) {
         console.error("キャンセルメール送信エラー:", emailError);
