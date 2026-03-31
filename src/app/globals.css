@@ -56,9 +56,6 @@ body {
 
 *, *::before, *::after {
   box-sizing: border-box;
-  word-break: break-word;
-  overflow-wrap: break-word;
-  max-width: 100%;
 }
 
 img, video, iframe {
