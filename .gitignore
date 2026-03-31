@@ -11,4 +11,4 @@ out/
 .wrangler
 *.tsbuildinfo
 next-env.d.ts
-/*.png
+/DESIGN_REFERENCE.png
