@@ -176,30 +176,6 @@ export async function POST(request: NextRequest) {
       .update({ stripe_session_id: session.id })
       .eq("order_id", order.id);
 
-    // 注文受付確認メールを送信
-    const resendApiKey = process.env.RESEND_API_KEY;
-    if (resendApiKey && resendApiKey !== "your_resend_api_key" && user.email) {
-      try {
-        const orderItemsWithProduct = items.map((item) => {
-          const product = products.find((p) => p.id === item.product_id)!;
-          return {
-            id: "", order_id: order.id, product_id: item.product_id,
-            quantity: item.quantity, price: product.price * item.quantity, created_at: "",
-            product: { id: product.id, name: product.name, price: product.price, stock: product.stock, image_urls: [] as string[], category_id: null, is_active: true, description: null, ingredients: null, created_at: "" },
-          };
-        });
-
-        const { sendOrderConfirmation } = await import("@/lib/email/send-order-confirmation");
-        await sendOrderConfirmation({
-          order: order as import("@/types/database").Order,
-          items: orderItemsWithProduct as (import("@/types/database").OrderItem & { product: import("@/types/database").Product })[],
-          email: user.email,
-        });
-      } catch (emailErr) {
-        console.error("注文確認メール送信エラー:", emailErr);
-      }
-    }
-
     return NextResponse.json({ url: session.url, orderId: order.id });
   } catch (error) {
     console.error("チェックアウトエラー:", error);

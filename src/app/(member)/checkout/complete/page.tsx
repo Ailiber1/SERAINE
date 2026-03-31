@@ -1,19 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { CheckCircle, Package, ArrowRight } from "lucide-react";
 import { Suspense } from "react";
+
 function CompleteContent() {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
   const [orderId, setOrderId] = useState<string | null>(null);
+  const confirmed = useRef(false);
 
   useEffect(() => {
-    // 決済完了後にカートをクリア
+    // カートをクリア
     localStorage.removeItem("seraine_cart");
-    // CartContextにも変更を通知
     window.dispatchEvent(new Event("storage"));
 
     // sessionStorageから注文IDを取得
@@ -22,14 +23,30 @@ function CompleteContent() {
       setOrderId(storedOrderId);
       sessionStorage.removeItem("seraine_last_order_id");
     }
-  }, []);
+
+    // Stripeセッションの決済完了を確認し、注文確定＋メール送信
+    if (sessionId && !confirmed.current) {
+      confirmed.current = true;
+      fetch("/api/checkout/confirm", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ session_id: sessionId }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.orderId && !storedOrderId) {
+            setOrderId(data.orderId);
+          }
+        })
+        .catch((err) => console.error("決済確認エラー:", err));
+    }
+  }, [sessionId]);
 
   const orderNumber = orderId ? orderId.slice(0, 8).toUpperCase() : null;
 
   return (
     <div className="py-16 md:py-24 px-5">
       <div className="max-w-[560px] mx-auto text-center">
-        {/* 成功アイコン */}
         <div className="mb-8">
           <CheckCircle
             size={56}
@@ -43,12 +60,11 @@ function CompleteContent() {
         </h1>
 
         <p className="text-[14px] text-deep-charcoal/60 leading-relaxed mb-8">
-          ご注文を承りました。
+          お支払いが完了しました。
           <br />
-          商品の発送準備が整い次第、ご連絡いたします。
+          確認メールをお送りしましたのでご確認ください。
         </p>
 
-        {/* 注文番号 */}
         {orderNumber && (
           <div className="bg-white border border-border-light rounded-lg p-6 mb-8">
             <p className="text-[12px] tracking-wide text-deep-charcoal/50 mb-1">
@@ -69,7 +85,6 @@ function CompleteContent() {
           </div>
         )}
 
-        {/* ナビゲーション */}
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
             href="/mypage"
