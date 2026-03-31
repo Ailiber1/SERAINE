@@ -78,7 +78,7 @@ export default async function Home() {
         />
         <div className="absolute inset-0 bg-soft-white/20" />
         <div className="relative z-10 text-center px-5 py-20 md:py-28">
-          <h1 className="font-heading text-[32px] md:text-[48px] lg:text-[56px] leading-tight tracking-wide text-deep-charcoal">
+          <h1 className="font-heading text-[26px] md:text-[48px] lg:text-[56px] leading-tight tracking-wide text-deep-charcoal">
             穏やかに輝く、<br className="sm:hidden" />
             あなただけの美しさを。
           </h1>

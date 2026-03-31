@@ -149,16 +149,16 @@ export default function CartPage() {
         </div>
 
         {/* アクション */}
-        <div className="mt-8 flex flex-col sm:flex-row gap-3">
+        <div className="mt-8 flex flex-col sm:flex-row gap-4">
           <Link
             href="/products"
-            className="flex-1 h-12 flex items-center justify-center border border-deep-charcoal text-deep-charcoal text-[13px] tracking-[0.1em] rounded-md hover:bg-deep-charcoal hover:text-white transition-colors"
+            className="flex-1 h-14 flex items-center justify-center border-2 border-deep-charcoal text-deep-charcoal text-[14px] tracking-[0.1em] rounded-md hover:bg-deep-charcoal hover:text-white transition-colors font-medium"
           >
             買い物を続ける
           </Link>
           <Link
             href="/checkout"
-            className="flex-1 h-12 flex items-center justify-center bg-deep-charcoal text-white text-[13px] tracking-[0.1em] rounded-md hover:bg-deep-charcoal/85 transition-colors"
+            className="flex-1 h-14 flex items-center justify-center bg-deep-charcoal text-white text-[14px] tracking-[0.1em] rounded-md hover:bg-deep-charcoal/85 transition-colors font-medium"
           >
             レジに進む
           </Link>
