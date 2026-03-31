@@ -145,7 +145,7 @@ export default function CheckoutPage() {
             カートが空です
           </h1>
           <p className="text-[14px] text-deep-charcoal/50 mb-10">
-            商品をカートに追加してからチェックアウトへお進みください。
+            商品をカートに追加してからご注文手続きへお進みください。
           </p>
           <Link
             href="/products"
@@ -171,7 +171,7 @@ export default function CheckoutPage() {
         </Link>
 
         <h1 className="font-heading text-[28px] md:text-[36px] tracking-wide text-deep-charcoal mb-10 md:mb-14">
-          チェックアウト
+          ご注文手続き
         </h1>
 
         <form onSubmit={handleSubmit}>

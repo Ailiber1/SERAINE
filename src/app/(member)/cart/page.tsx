@@ -144,7 +144,7 @@ export default function CartPage() {
             </span>
           </div>
           <p className="mt-2 text-[12px] text-deep-charcoal/40">
-            送料はチェックアウト時に計算されます
+            送料はご注文手続き時に計算されます
           </p>
         </div>
 
