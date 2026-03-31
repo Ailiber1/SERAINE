@@ -48,7 +48,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-dvh flex flex-col bg-soft-white text-deep-charcoal">
+      <body className="min-h-dvh flex flex-col bg-soft-white text-deep-charcoal overflow-x-hidden">
         <CartProvider>
           <Header />
           <main className="flex-1">{children}</main>
