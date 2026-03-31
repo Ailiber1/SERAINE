@@ -65,19 +65,23 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "注文が見つかりません" }, { status: 404 });
     }
 
-    if (order.status === "pending") {
-      await supabase
-        .from("orders")
-        .update({ status: "confirmed" })
-        .eq("id", orderId);
-
-      await supabase
-        .from("order_payments")
-        .update({ status: "paid", stripe_session_id: session_id })
-        .eq("order_id", orderId);
+    // 既に確認済みの場合はメール送信せず返す（リロード対策）
+    if (order.status !== "pending") {
+      return NextResponse.json({ success: true, orderId, alreadyConfirmed: true });
     }
 
-    // 注文確認メール送信（まだ送信していない場合）
+    // ステータスを確認済みに更新
+    await supabase
+      .from("orders")
+      .update({ status: "confirmed" })
+      .eq("id", orderId);
+
+    await supabase
+      .from("order_payments")
+      .update({ status: "paid", stripe_session_id: session_id })
+      .eq("order_id", orderId);
+
+    // 注文確認メール送信（初回のみ）
     const resendApiKey = process.env.RESEND_API_KEY;
     if (resendApiKey && resendApiKey !== "your_resend_api_key" && user.email) {
       try {
