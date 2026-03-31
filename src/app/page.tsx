@@ -190,7 +190,7 @@ export default async function Home() {
                 Our Commitment
               </p>
               <h2 className="font-heading text-[28px] md:text-[36px] leading-snug tracking-wide text-deep-charcoal">
-                3つのこだわり
+                <span className="font-price">3</span>つのこだわり
               </h2>
 
               <div className="mt-10 space-y-8">
