@@ -5,17 +5,19 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { CheckCircle, Package, ArrowRight } from "lucide-react";
 import { Suspense } from "react";
+import { useCart } from "@/lib/cart-context";
 
 function CompleteContent() {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
   const [orderId, setOrderId] = useState<string | null>(null);
   const confirmed = useRef(false);
+  const { clearCart } = useCart();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    // カートをクリア
-    localStorage.removeItem("seraine_cart");
-    window.dispatchEvent(new Event("storage"));
+    // カートをクリア（Context経由で確実に状態更新）
+    clearCart();
 
     // sessionStorageから注文IDを取得
     const storedOrderId = sessionStorage.getItem("seraine_last_order_id");
