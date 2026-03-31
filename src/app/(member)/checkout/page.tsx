@@ -14,7 +14,7 @@ const DEFAULT_SHIPPING_FEE = 550;
 const DEFAULT_FREE_THRESHOLD = 8000;
 
 export default function CheckoutPage() {
-  const { items, clearCart, totalItems } = useCart();
+  const { items, totalItems } = useCart();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [shippingSettings, setShippingSettings] = useState<ShippingSettings>({
