@@ -295,7 +295,7 @@ export default async function Home() {
         />
         <div className="absolute inset-0 bg-deep-charcoal/50" />
         <div className="relative z-10 text-center px-5 py-16">
-          <h2 className="font-heading text-[26px] md:text-[40px] tracking-wide text-white leading-snug">
+          <h2 className="font-heading text-[28px] md:text-[40px] tracking-normal text-white leading-snug">
             あなたの肌に<br className="md:hidden" />最高のケアを。
           </h2>
           <Link
