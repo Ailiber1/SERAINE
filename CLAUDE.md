@@ -90,6 +90,24 @@ Cloudflare Pages（仕様書指定・商用利用可能・無料）
 Phase 1 評価: 104点/118点（機能30/エラー20/デザイン16/独創性12/レスポンシブ14/セキュリティ12）→ 合格。Phase 2へ
 Phase 2 評価: 100点/118点（機能28/エラー15/デザイン17/独創性12/レスポンシブ14/セキュリティ14）→ 合格。Phase 3へ
   指摘: getProductImage境界エラー修正要、/loginの500エラー修正要
+Phase 3 評価: 104点/118点（機能28/エラー18/デザイン17/独創性12/レスポンシブ14/セキュリティ15）→ 合格。Phase 4へ
+  指摘: Webhook用Supabaseクライアントのservice_role化をPhase 5で対応
+
+## 管理者ユーザー作成方法
+
+Supabase SQL Editorで以下を実行して、既存ユーザーを管理者に昇格:
+```sql
+-- メールアドレスで対象ユーザーのIDを確認
+SELECT id, email FROM auth.users WHERE email = 'your-admin@example.com';
+
+-- profilesテーブルのroleをadminに変更
+UPDATE profiles SET role = 'admin' WHERE id = '取得したユーザーID';
+```
+
+新規に管理者を作成する場合:
+1. /register でアカウントを作成
+2. 上記SQLでroleを'admin'に変更
+3. /admin にアクセス可能になる
 
 ## ディレクトリ構成
 ```

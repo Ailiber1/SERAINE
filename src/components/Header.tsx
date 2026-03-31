@@ -2,12 +2,17 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ShoppingBag, User, Menu, X } from "lucide-react";
 import { useCart } from "@/lib/cart-context";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { totalItems } = useCart();
+  const pathname = usePathname();
+
+  // 管理画面ではヘッダーを非表示
+  if (pathname.startsWith("/admin")) return null;
 
   return (
     <header className="w-full border-b border-border-light bg-soft-white/95 backdrop-blur-sm sticky top-0 z-50">

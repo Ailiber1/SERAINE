@@ -1,6 +1,14 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Footer() {
+  const pathname = usePathname();
+
+  // 管理画面ではフッターを非表示
+  if (pathname.startsWith("/admin")) return null;
+
   return (
     <footer className="bg-deep-charcoal text-white/90 mt-auto">
       <div className="max-w-[1200px] mx-auto px-5 md:px-10 py-14 md:py-20">
