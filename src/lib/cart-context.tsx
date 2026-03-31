@@ -92,19 +92,21 @@ export function CartProvider({ children }: { children: ReactNode }) {
   // --- Supabase からカートを読み込む ---
   const loadServerCart = useCallback(async (uid: string) => {
     const supabase = createClient();
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from("cart_items")
-      .select("product_id, quantity, product:products(*)")
+      .select("product_id, quantity")
       .eq("user_id", uid);
-    if (data) {
-      const mapped: LocalCartItem[] = data
-        .filter((row) => row.product)
-        .map((row) => ({
-          product_id: row.product_id,
-          quantity: row.quantity,
-          product: row.product as unknown as Product,
-        }));
-      setItems(mapped);
+
+    if (error) {
+      console.error("カート読み込みエラー:", error);
+      return;
+    }
+
+    if (data && data.length > 0) {
+      const enriched = await enrichItems(data);
+      setItems(enriched);
+    } else {
+      setItems([]);
     }
   }, []);
 
