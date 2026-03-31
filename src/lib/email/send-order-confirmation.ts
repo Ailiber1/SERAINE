@@ -49,14 +49,16 @@ export async function sendOrderConfirmation({
           </tbody>
         </table>
         <div style="border-top:1px solid #E5E3DF;padding-top:16px;">
-          <div style="display:flex;justify-content:space-between;font-size:14px;margin:0 0 8px;">
-            <span>送料</span>
-            <span>${order.shipping_fee === 0 ? "無料" : `¥${order.shipping_fee.toLocaleString("ja-JP")}`}</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;font-size:18px;font-weight:600;">
-            <span>合計</span>
-            <span>¥${order.total.toLocaleString("ja-JP")}</span>
-          </div>
+          <table style="width:100%;border-collapse:collapse;">
+            <tr>
+              <td style="font-size:14px;padding:4px 0;">送料</td>
+              <td style="font-size:14px;padding:4px 0;text-align:right;">${order.shipping_fee === 0 ? "無料" : `¥${order.shipping_fee.toLocaleString("ja-JP")}`}</td>
+            </tr>
+            <tr>
+              <td style="font-size:18px;font-weight:600;padding:4px 0;">合計</td>
+              <td style="font-size:18px;font-weight:600;padding:4px 0;text-align:right;">¥${order.total.toLocaleString("ja-JP")}</td>
+            </tr>
+          </table>
         </div>
         <div style="margin-top:24px;padding:16px;background:#FAFAF8;border-radius:8px;">
           <p style="font-size:12px;color:#1A1A1A80;margin:0 0 4px;">お届け先</p>

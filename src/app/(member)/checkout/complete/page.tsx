@@ -12,7 +12,7 @@ function CompleteContent() {
 
   useEffect(() => {
     // 決済完了後にカートをクリア（localStorageを直接操作）
-    localStorage.removeItem("seraine-cart");
+    localStorage.removeItem("seraine_cart");
 
     // sessionStorageから注文IDを取得
     const storedOrderId = sessionStorage.getItem("seraine_last_order_id");

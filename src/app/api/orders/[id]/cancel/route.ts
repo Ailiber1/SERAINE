@@ -156,16 +156,18 @@ function buildCancelConfirmationHtml(order: OrderForEmail): string {
 
       <!-- 注文情報 -->
       <div style="background:#FAFAF8;border-radius:8px;padding:20px;margin:0 0 24px;">
-        <div style="display:flex;justify-content:space-between;margin:0 0 8px;">
-          <div>
-            <p style="font-size:11px;text-transform:uppercase;letter-spacing:0.15em;color:#1A1A1A60;margin:0 0 4px;">注文番号</p>
-            <p style="font-size:16px;font-weight:600;margin:0;color:#1A1A1A;">#${orderNumber}</p>
-          </div>
-          <div style="text-align:right;">
-            <p style="font-size:11px;text-transform:uppercase;letter-spacing:0.15em;color:#1A1A1A60;margin:0 0 4px;">注文日</p>
-            <p style="font-size:14px;margin:0;color:#1A1A1A;">${formattedDate}</p>
-          </div>
-        </div>
+        <table style="width:100%;border-collapse:collapse;">
+          <tr>
+            <td style="vertical-align:top;">
+              <p style="font-size:11px;text-transform:uppercase;letter-spacing:0.15em;color:#1A1A1A60;margin:0 0 4px;">注文番号</p>
+              <p style="font-size:16px;font-weight:600;margin:0;color:#1A1A1A;">#${orderNumber}</p>
+            </td>
+            <td style="vertical-align:top;text-align:right;">
+              <p style="font-size:11px;text-transform:uppercase;letter-spacing:0.15em;color:#1A1A1A60;margin:0 0 4px;">注文日</p>
+              <p style="font-size:14px;margin:0;color:#1A1A1A;">${formattedDate}</p>
+            </td>
+          </tr>
+        </table>
       </div>
 
       <!-- 商品一覧 -->

@@ -12,7 +12,7 @@ export default function CancelOrderButton({
   orderId,
   orderNumber,
 }: CancelOrderButtonProps) {
-  const [status, setStatus] = useState<"idle" | "confirming" | "loading">("idle");
+  const [status, setStatus] = useState<"idle" | "confirming" | "loading" | "cancelled">("idle");
   const router = useRouter();
 
   const handleCancel = async () => {
@@ -29,6 +29,7 @@ export default function CancelOrderButton({
         return;
       }
 
+      setStatus("cancelled");
       router.refresh();
     } catch {
       alert("キャンセル処理中にエラーが発生しました");
@@ -36,15 +37,23 @@ export default function CancelOrderButton({
     }
   };
 
+  if (status === "cancelled") {
+    return (
+      <p className="mt-3 text-[12px] text-deep-charcoal/50">
+        キャンセルが完了しました
+      </p>
+    );
+  }
+
   if (status === "confirming") {
     return (
       <div className="flex items-center gap-2 mt-3">
-        <span className="text-[12px] text-red-600">
+        <span className="text-[12px] text-deep-charcoal/60">
           #{orderNumber} をキャンセルしますか？
         </span>
         <button
           onClick={handleCancel}
-          className="px-3 py-1.5 text-[11px] bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+          className="px-3 py-1.5 text-[11px] bg-deep-charcoal text-white rounded-md hover:bg-deep-charcoal/85 transition-colors"
         >
           はい
         </button>
@@ -62,7 +71,7 @@ export default function CancelOrderButton({
     <button
       onClick={() => setStatus("confirming")}
       disabled={status === "loading"}
-      className="mt-3 px-4 py-1.5 text-[11px] tracking-wide border border-red-200 text-red-600 rounded-md hover:bg-red-50 transition-colors disabled:opacity-50"
+      className="mt-3 px-4 py-1.5 text-[11px] tracking-wide border border-champagne-gold/60 text-champagne-gold rounded-md hover:bg-champagne-gold/10 transition-colors disabled:opacity-50"
     >
       {status === "loading" ? "処理中..." : "キャンセルする"}
     </button>
