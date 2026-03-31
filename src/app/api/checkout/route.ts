@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import { getStripe } from "@/lib/stripe/client";

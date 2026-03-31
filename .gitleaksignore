@@ -1,1 +1,3 @@
 next.config.ts:jwt:9
+.env.production:generic-api-key:3
+.env.production:jwt:2

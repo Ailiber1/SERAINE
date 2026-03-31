@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 export const metadata = {
   title: "プライバシーポリシー | SÉRAINE",
   description: "SÉRAINEのプライバシーポリシー。お客様の個人情報の取り扱いについて。",

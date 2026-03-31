@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import { createClient } from "@/lib/supabase/server";
 import type { Product, Category } from "@/types/database";
 import ProductsClient from "./products-client";
