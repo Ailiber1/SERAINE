@@ -13,7 +13,7 @@ const STATUS_LABELS: Record<string, { label: string; color: string }> = {
   confirmed: { label: "確定", color: "bg-green-100 text-green-800" },
   shipped: { label: "発送済み", color: "bg-blue-100 text-blue-800" },
   delivered: { label: "配達完了", color: "bg-deep-charcoal/10 text-deep-charcoal" },
-  cancelled: { label: "キャンセル", color: "bg-red-100 text-red-800" },
+  cancelled: { label: "キャンセル済み", color: "bg-deep-charcoal/10 text-deep-charcoal/60" },
 };
 
 export default async function MyPage() {
