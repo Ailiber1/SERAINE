@@ -68,11 +68,13 @@ export async function updateSession(request: NextRequest) {
     }
   }
 
-  // ログイン済みで /login, /register にアクセスしたら / にリダイレクト
+  // ログイン済みで /login, /register にアクセスしたらリダイレクト
   const authPaths = ["/login", "/register"];
   if (authPaths.includes(pathname) && user) {
     const url = request.nextUrl.clone();
-    url.pathname = "/";
+    const redirectTo = request.nextUrl.searchParams.get("redirect");
+    url.pathname = redirectTo || "/";
+    url.search = "";
     return NextResponse.redirect(url);
   }
 
