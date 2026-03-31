@@ -149,7 +149,7 @@ function buildCancelConfirmationHtml(order: OrderForEmail): string {
 
     <!-- 本文 -->
     <div style="padding:40px 32px;">
-      <h2 style="font-size:18px;font-weight:500;margin:0 0 20px;color:#1A1A1A;">ご注文のキャンセルが完了しました</h2>
+      <h2 style="font-family:'Cormorant Garamond','Georgia','Times New Roman',serif;font-size:22px;font-weight:400;letter-spacing:0.08em;margin:0 0 20px;color:#1A1A1A;">ご注文のキャンセルが完了しました</h2>
       <p style="font-size:14px;line-height:1.8;color:#1A1A1A99;margin:0 0 28px;">
         以下のご注文のキャンセル処理が完了いたしました。
       </p>

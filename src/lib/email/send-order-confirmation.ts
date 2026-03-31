@@ -28,7 +28,7 @@ export async function sendOrderConfirmation({
         <h1 style="font-family:'Cormorant Garamond',serif;font-size:28px;letter-spacing:0.15em;margin:0;">SERAINE</h1>
       </div>
       <div style="padding:32px 24px;">
-        <h2 style="font-size:18px;margin:0 0 16px;">ご注文ありがとうございます</h2>
+        <h2 style="font-family:'Cormorant Garamond','Georgia','Times New Roman',serif;font-size:22px;font-weight:400;letter-spacing:0.08em;margin:0 0 16px;color:#1A1A1A;">ご注文ありがとうございます</h2>
         <p style="font-size:14px;color:#1A1A1A99;margin:0 0 24px;">
           ご注文を承りました。商品の発送準備が整い次第、改めてご連絡いたします。
         </p>
