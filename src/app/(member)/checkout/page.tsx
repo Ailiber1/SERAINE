@@ -122,8 +122,9 @@ export default function CheckoutPage() {
         sessionStorage.setItem("seraine_last_order_id", data.orderId);
       }
 
-      // Stripe Checkoutにリダイレクト（カートクリアは完了ページで行う）
+      // カートをクリアしてからStripe Checkoutにリダイレクト
       if (data.url) {
+        localStorage.removeItem("seraine_cart");
         window.location.href = data.url;
       }
     } catch {
