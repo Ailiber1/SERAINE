@@ -14,6 +14,10 @@ const imageMap: Record<string, string> = {
 
 export function getProductImage(product: Product | null | undefined): string {
   if (!product) return "/images/product-serum.jpg";
+  // 名前ベースのマッピングを優先（DB内のpngパスが残っている場合の対策）
+  if (imageMap[product.name]) {
+    return imageMap[product.name];
+  }
   if (
     Array.isArray(product.image_urls) &&
     product.image_urls.length > 0 &&
@@ -22,5 +26,5 @@ export function getProductImage(product: Product | null | undefined): string {
   ) {
     return product.image_urls[0];
   }
-  return imageMap[product.name] || "/images/product-serum.jpg";
+  return "/images/product-serum.jpg";
 }
