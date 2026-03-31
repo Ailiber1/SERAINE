@@ -2,8 +2,5 @@
   "name": "seraine",
   "pages_build_output_dir": ".open-next/assets",
   "compatibility_date": "2024-12-01",
-  "compatibility_flags": ["nodejs_compat"],
-  "assets": {
-    "binding": "ASSETS"
-  }
+  "compatibility_flags": ["nodejs_compat"]
 }
