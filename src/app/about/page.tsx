@@ -31,7 +31,7 @@ export default function AboutPage() {
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 md:gap-20 items-center">
           <div className="relative aspect-[4/5] rounded-lg overflow-hidden">
             <Image
-              src="/images/brand-story.png"
+              src="/images/about-story.png"
               alt="SÉRAINEのブランドストーリー"
               fill
               className="object-cover"
@@ -130,7 +130,7 @@ export default function AboutPage() {
           </div>
           <div className="relative aspect-square rounded-lg overflow-hidden order-1 md:order-2">
             <Image
-              src="/images/ingredient.png"
+              src="/images/about-ingredients.png"
               alt="SÉRAINEの厳選成分"
               fill
               className="object-cover"
