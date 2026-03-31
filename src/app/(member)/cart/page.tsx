@@ -152,13 +152,13 @@ export default function CartPage() {
         <div className="mt-8 flex flex-col sm:flex-row gap-4">
           <Link
             href="/products"
-            className="flex-1 h-14 flex items-center justify-center border-2 border-deep-charcoal text-deep-charcoal text-[14px] tracking-[0.1em] rounded-md hover:bg-deep-charcoal hover:text-white transition-colors font-medium"
+            className="flex-1 h-[56px] flex items-center justify-center border border-champagne-gold/60 text-champagne-gold text-[14px] tracking-[0.1em] rounded-md hover:bg-champagne-gold/10 transition-colors font-medium"
           >
             買い物を続ける
           </Link>
           <Link
             href="/checkout"
-            className="flex-1 h-14 flex items-center justify-center bg-deep-charcoal text-white text-[14px] tracking-[0.1em] rounded-md hover:bg-deep-charcoal/85 transition-colors font-medium"
+            className="flex-1 h-[56px] flex items-center justify-center bg-deep-charcoal text-white text-[14px] tracking-[0.1em] rounded-md hover:bg-deep-charcoal/85 transition-colors font-medium"
           >
             レジに進む
           </Link>
