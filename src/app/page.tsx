@@ -101,7 +101,7 @@ export default async function Home() {
           <div className="grid grid-cols-1 md:grid-cols-[1fr_1.2fr] gap-10 md:gap-16 items-center">
             <div className="relative aspect-[4/5] rounded-md overflow-hidden order-2 md:order-1">
               <Image
-                src="/images/brand-story.png"
+                src="/images/brand-story.jpg"
                 alt="SÉRAINEのブランドストーリー"
                 fill
                 className="object-cover"
@@ -239,7 +239,7 @@ export default async function Home() {
 
             <div className="relative aspect-[4/5] rounded-md overflow-hidden">
               <Image
-                src="/images/ingredient.png"
+                src="/images/ingredient.jpg"
                 alt="SÉRAINEのこだわり"
                 fill
                 className="object-cover"

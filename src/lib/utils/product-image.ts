@@ -5,11 +5,11 @@ const imageMap: Record<string, string> = {
   "リュミエール セラム": "/images/product-serum.jpg",
   "ヴェルール クリーム": "/images/product-cream.jpg",
   "ロゼ トーナー": "/images/product-toner.jpg",
-  "ペタル クレンジング": "/images/product-cleansing.png",
-  "エクロール アイクリーム": "/images/product-eyecream.png",
-  "シエル UV プロテクト": "/images/product-sunscreen.png",
-  "ノクテイユ ナイトマスク": "/images/product-nightmask.png",
-  "セレーヌ コフレセット": "/images/product-coffret.png",
+  "ペタル クレンジング": "/images/product-cleansing.jpg",
+  "エクロール アイクリーム": "/images/product-eyecream.jpg",
+  "シエル UV プロテクト": "/images/product-sunscreen.jpg",
+  "ノクテイユ ナイトマスク": "/images/product-nightmask.jpg",
+  "セレーヌ コフレセット": "/images/product-coffret.jpg",
 };
 
 export function getProductImage(product: Product | null | undefined): string {
