@@ -27,9 +27,8 @@ export default function AboutPage() {
           <p className="text-[11px] tracking-[0.3em] text-champagne-gold uppercase mb-6">
             About SÉRAINE
           </p>
-          <h1 className="font-heading text-[32px] md:text-[48px] leading-tight tracking-wide mb-6 text-white">
-            穏やかに輝く、
-            <br />
+          <h1 className="font-heading text-[28px] md:text-[48px] leading-tight tracking-normal md:tracking-wide mb-6 text-white">
+            穏やかに輝く、<br />
             あなただけの美しさを。
           </h1>
           <p className="text-white/70 text-sm md:text-base leading-relaxed max-w-xl mx-auto">
