@@ -35,20 +35,6 @@ function LoginForm() {
     router.refresh();
   }
 
-  async function handleGitHubLogin() {
-    const supabase = createClient();
-    const { error: authError } = await supabase.auth.signInWithOAuth({
-      provider: "github",
-      options: {
-        redirectTo: `${window.location.origin}/auth/callback?redirect=${encodeURIComponent(redirect)}`,
-      },
-    });
-
-    if (authError) {
-      setError("GitHubログインに失敗しました。");
-    }
-  }
-
   return (
     <div className="w-full max-w-[400px]">
       <h1 className="font-heading text-3xl md:text-4xl text-center tracking-wide mb-2">
