@@ -20,13 +20,8 @@ export default function ProductsClient({ products, categories }: Props) {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<SortKey>("newest");
 
-  const filtered = useMemo(() => {
+  const { matched, unmatched } = useMemo(() => {
     let result = [...products];
-
-    // カテゴリフィルター
-    if (selectedCategory !== "all") {
-      result = result.filter((p) => p.category_id === selectedCategory);
-    }
 
     // キーワード検索
     if (searchQuery.trim()) {
@@ -39,23 +34,24 @@ export default function ProductsClient({ products, categories }: Props) {
     }
 
     // 並び替え
-    switch (sortBy) {
-      case "price_asc":
-        result.sort((a, b) => a.price - b.price);
-        break;
-      case "price_desc":
-        result.sort((a, b) => b.price - a.price);
-        break;
-      case "name":
-        result.sort((a, b) => a.name.localeCompare(b.name, "ja"));
-        break;
-      case "newest":
-      default:
-        // すでにcreated_at順
-        break;
+    const sortFn = (a: Product, b: Product) => {
+      switch (sortBy) {
+        case "price_asc": return a.price - b.price;
+        case "price_desc": return b.price - a.price;
+        case "name": return a.name.localeCompare(b.name, "ja");
+        default: return 0;
+      }
+    };
+    result.sort(sortFn);
+
+    // カテゴリフィルター: 該当商品と非該当商品に分ける
+    if (selectedCategory !== "all") {
+      const m = result.filter((p) => p.category_id === selectedCategory);
+      const u = result.filter((p) => p.category_id !== selectedCategory);
+      return { matched: m, unmatched: u };
     }
 
-    return result;
+    return { matched: result, unmatched: [] };
   }, [products, selectedCategory, searchQuery, sortBy]);
 
   return (
@@ -128,8 +124,8 @@ export default function ProductsClient({ products, categories }: Props) {
           </div>
         </div>
 
-        {/* 商品グリッド — 非対称レイアウト */}
-        {filtered.length === 0 ? (
+        {/* 商品グリッド */}
+        {matched.length === 0 && unmatched.length === 0 ? (
           <div className="text-center py-20">
             <p className="text-[14px] text-deep-charcoal/50">
               該当する商品が見つかりませんでした。
@@ -137,11 +133,12 @@ export default function ProductsClient({ products, categories }: Props) {
           </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-10 md:gap-x-7 md:gap-y-14">
-            {filtered.map((product, i) => (
+            {/* 該当商品: 明るく先頭に表示 */}
+            {matched.map((product, i) => (
               <Link
                 key={product.id}
                 href={`/products/${product.id}`}
-                className={`group block ${i % 3 === 1 ? "md:mt-6" : ""}`}
+                className={`group block transition-all duration-300 ${i % 3 === 1 ? "md:mt-6" : ""}`}
               >
                 <div className="relative aspect-[3/4] overflow-hidden rounded-md bg-blush-pink/20">
                   <Image
@@ -162,6 +159,38 @@ export default function ProductsClient({ products, categories }: Props) {
                     </p>
                   )}
                   <p className="mt-1.5 font-price text-[14px] md:text-[15px] tracking-wide text-deep-charcoal">
+                    {formatPrice(product.price)}
+                  </p>
+                </div>
+              </Link>
+            ))}
+
+            {/* 非該当商品: 薄く影をかけて表示 */}
+            {unmatched.map((product, i) => (
+              <Link
+                key={product.id}
+                href={`/products/${product.id}`}
+                className={`group block opacity-30 hover:opacity-60 transition-all duration-300 ${(matched.length + i) % 3 === 1 ? "md:mt-6" : ""}`}
+              >
+                <div className="relative aspect-[3/4] overflow-hidden rounded-md bg-blush-pink/10">
+                  <Image
+                    src={getProductImage(product)}
+                    alt={product.name}
+                    fill
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                    className="object-cover grayscale-[30%]"
+                  />
+                </div>
+                <div className="mt-4 px-1">
+                  <h3 className="text-[13px] md:text-[14px] tracking-wide text-deep-charcoal/50">
+                    {product.name}
+                  </h3>
+                  {product.category && (
+                    <p className="mt-1 text-[11px] text-deep-charcoal/30">
+                      {product.category.name}
+                    </p>
+                  )}
+                  <p className="mt-1.5 font-price text-[14px] md:text-[15px] tracking-wide text-deep-charcoal/50">
                     {formatPrice(product.price)}
                   </p>
                 </div>
