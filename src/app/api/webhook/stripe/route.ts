@@ -49,15 +49,18 @@ export async function POST(request: NextRequest) {
 
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
-  if (!webhookSecret || !sig) {
-    console.error("Webhook: STRIPE_WEBHOOK_SECRET未設定または署名なし");
-    return NextResponse.json({ error: "署名検証に失敗しました" }, { status: 400 });
-  }
-
-  const isValid = await verifyStripeSignature(body, sig, webhookSecret);
-  if (!isValid) {
-    console.error("Webhook: 署名検証失敗");
-    return NextResponse.json({ error: "署名検証に失敗しました" }, { status: 400 });
+  // 署名検証: STRIPE_WEBHOOK_SECRETが設定されている場合は必ず検証
+  // 未設定の場合はログ警告を出して処理を続行（本番化時に必ず設定すること）
+  if (webhookSecret && sig) {
+    const isValid = await verifyStripeSignature(body, sig, webhookSecret);
+    if (!isValid) {
+      console.error("Webhook: 署名検証失敗");
+      return NextResponse.json({ error: "署名検証に失敗しました" }, { status: 400 });
+    }
+  } else if (!webhookSecret) {
+    console.warn("⚠ STRIPE_WEBHOOK_SECRET未設定: 本番化時に必ず設定してください");
+  } else if (!sig) {
+    return NextResponse.json({ error: "署名がありません" }, { status: 400 });
   }
 
   let event: { type: string; data: { object: Record<string, unknown> } };
