@@ -8,33 +8,63 @@ import type { Product } from "@/types/database";
 function getSupabaseAdmin() {
   return createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
+}
+
+async function verifyStripeSignature(
+  payload: string,
+  signature: string,
+  secret: string
+): Promise<boolean> {
+  const parts = signature.split(",");
+  const timestamp = parts.find(p => p.startsWith("t="))?.slice(2);
+  const v1Sig = parts.find(p => p.startsWith("v1="))?.slice(3);
+
+  if (!timestamp || !v1Sig) return false;
+
+  const age = Math.floor(Date.now() / 1000) - parseInt(timestamp);
+  if (age > 300) return false;
+
+  const signedPayload = `${timestamp}.${payload}`;
+  const encoder = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    "raw",
+    encoder.encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+  const mac = await crypto.subtle.sign("HMAC", key, encoder.encode(signedPayload));
+  const expectedSig = Array.from(new Uint8Array(mac))
+    .map(b => b.toString(16).padStart(2, "0"))
+    .join("");
+
+  return expectedSig === v1Sig;
 }
 
 export async function POST(request: NextRequest) {
   const body = await request.text();
   const sig = request.headers.get("stripe-signature");
 
-  let event: { type: string; data: { object: Record<string, unknown> } };
-
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-  if (webhookSecret && webhookSecret !== "whsec_placeholder" && sig) {
-    // Edge環境では簡易検証（JSONパース）
-    // 本番ではcrypto.subtleを使ったHMAC検証を実装すべき
-    try {
-      event = JSON.parse(body);
-    } catch (err) {
-      console.error("Webhook署名検証失敗:", err);
-      return NextResponse.json({ error: "Webhook署名検証に失敗しました" }, { status: 400 });
-    }
-  } else {
-    try {
-      event = JSON.parse(body);
-      console.warn("⚠ Webhook署名検証スキップ（開発モード）");
-    } catch {
-      return NextResponse.json({ error: "無効なリクエストです" }, { status: 400 });
-    }
+
+  if (!webhookSecret || !sig) {
+    console.error("Webhook: STRIPE_WEBHOOK_SECRET未設定または署名なし");
+    return NextResponse.json({ error: "署名検証に失敗しました" }, { status: 400 });
+  }
+
+  const isValid = await verifyStripeSignature(body, sig, webhookSecret);
+  if (!isValid) {
+    console.error("Webhook: 署名検証失敗");
+    return NextResponse.json({ error: "署名検証に失敗しました" }, { status: 400 });
+  }
+
+  let event: { type: string; data: { object: Record<string, unknown> } };
+  try {
+    event = JSON.parse(body);
+  } catch {
+    return NextResponse.json({ error: "無効なリクエストです" }, { status: 400 });
   }
 
   if (event.type === "checkout.session.completed") {
@@ -58,7 +88,6 @@ export async function POST(request: NextRequest) {
         .single();
 
       if (existingOrder?.status === "confirmed") {
-        console.log(`注文 ${orderId} は既に確定済みです（冪等性チェック）`);
         return NextResponse.json({ received: true });
       }
 
@@ -71,8 +100,6 @@ export async function POST(request: NextRequest) {
         .from("orders")
         .update({ status: "confirmed" })
         .eq("id", orderId);
-
-      console.log(`注文 ${orderId} を確定しました`);
 
       if (userId) {
         try {
